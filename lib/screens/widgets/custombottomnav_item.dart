@@ -1,5 +1,4 @@
 import 'package:dineinapp/cubit/page_cubit.dart';
-import 'package:dineinapp/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
