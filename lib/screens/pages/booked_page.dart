@@ -9,10 +9,9 @@ class BookedPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: background,
       body: Center(
-        child: Text(
-          'Booked Page',
-        ),
-      ),
+          child: Text(
+        'Booked Page',
+      )),
     );
   }
 }

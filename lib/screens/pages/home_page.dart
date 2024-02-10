@@ -2,9 +2,17 @@ import 'package:dineinapp/screens/widgets/customtextfield_widget.dart';
 import 'package:dineinapp/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:dineinapp/models/tabitem_model.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({Key? key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _itemIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +85,7 @@ class HomePage extends StatelessWidget {
 
     Widget greeting() {
       return Container(
+        padding: EdgeInsets.symmetric(horizontal: 24),
         margin: EdgeInsets.only(
           top: 24,
         ),
@@ -104,6 +113,7 @@ class HomePage extends StatelessWidget {
 
     Widget searchBar() {
       return Container(
+        padding: EdgeInsets.symmetric(horizontal: 24),
         margin: EdgeInsets.only(top: 24),
         child: CustomTextField(
           icon: 'assets/svgs/ic_search.svg',
@@ -112,14 +122,91 @@ class HomePage extends StatelessWidget {
       );
     }
 
+    Widget tabBar() {
+      Widget mainBody() {
+        return Container(
+          margin: EdgeInsets.only(top: 24),
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          width: double.infinity,
+          height: 500,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Tempat Populer',
+                style: blackText.copyWith(
+                  fontSize: 16,
+                  fontWeight: semibold,
+                ),
+              ),
+            ],
+          ),
+        );
+      }
+
+      return Column(
+        children: [
+          Container(
+            height: 36,
+            width: double.infinity,
+            color: Colors.transparent,
+            child: IntrinsicWidth(
+              child: ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  physics: BouncingScrollPhysics(),
+                  itemCount: item_data.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(
+                          () {
+                            _itemIndex = index;
+                          },
+                        );
+                      },
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 100),
+                        margin: const EdgeInsets.only(right: 16),
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: _itemIndex == index ? primary : white,
+                          borderRadius: BorderRadius.circular(104),
+                        ),
+                        child: Center(
+                          child: Text(
+                            item_data[index].title,
+                            style: _itemIndex == index
+                                ? whiteText.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: semibold,
+                                  )
+                                : blackText.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: regular,
+                                  ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+            ),
+          ),
+
+          //MAIN BODY
+          mainBody()
+        ],
+      );
+    }
+
     return Scaffold(
       appBar: appBar(),
       backgroundColor: background,
       body: ListView(
-        padding: EdgeInsets.symmetric(horizontal: 24),
         children: [
           greeting(),
           searchBar(),
+          tabBar(),
         ],
       ),
     );
