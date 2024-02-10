@@ -67,7 +67,9 @@ class SignUpPage extends StatelessWidget {
         return CustomButton(
           margin: EdgeInsets.only(top: 24),
           title: 'Daftar',
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/main');
+          },
         );
       }
 

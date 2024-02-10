@@ -61,7 +61,9 @@ class SignInPage extends StatelessWidget {
         return CustomButton(
           margin: EdgeInsets.only(top: 24),
           title: 'Masuk',
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pushNamed(context, '/main');
+          },
         );
       }
 
