@@ -1,18 +1,16 @@
+import 'package:dineinapp/screens/pages/tabs/cafe_tab.dart';
+import 'package:dineinapp/screens/pages/tabs/kakilima_tab.dart';
+import 'package:dineinapp/screens/pages/tabs/restoran_tab.dart';
+import 'package:dineinapp/screens/pages/tabs/semua_tab.dart';
+import 'package:dineinapp/screens/pages/tabs/warungmakan_tab.dart';
 import 'package:dineinapp/screens/widgets/customtextfield_widget.dart';
+import 'package:dineinapp/screens/widgets/tabitem_widget.dart';
 import 'package:dineinapp/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:dineinapp/models/tabitem_model.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key});
-
-  @override
-  State<HomePage> createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  int _itemIndex = 0;
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +19,7 @@ class _HomePageState extends State<HomePage> {
         elevation: 0,
         automaticallyImplyLeading: false,
         backgroundColor: background,
+        surfaceTintColor: Colors.transparent,
         title: Row(
           children: [
             Container(
@@ -122,79 +121,34 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
-    Widget tabBar() {
-      Widget mainBody() {
-        return Container(
-          margin: EdgeInsets.only(top: 24),
-          padding: EdgeInsets.symmetric(horizontal: 24),
-          width: double.infinity,
-          height: 500,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Tempat Populer',
-                style: blackText.copyWith(
-                  fontSize: 16,
-                  fontWeight: semibold,
-                ),
-              ),
-            ],
+    TabBar tabsItem() {
+      return TabBar(
+        isScrollable: true,
+        physics: BouncingScrollPhysics(),
+        labelColor: white,
+        unselectedLabelColor: black,
+        indicatorWeight: 0,
+        indicator: BoxDecoration(
+          borderRadius: BorderRadius.circular(104),
+          color: primary,
+        ),
+        indicatorSize: TabBarIndicatorSize.tab,
+        tabs: [
+          Tab(
+            child: TabItem(title: 'Semua'),
           ),
-        );
-      }
-
-      return Column(
-        children: [
-          Container(
-            height: 36,
-            width: double.infinity,
-            color: Colors.transparent,
-            child: IntrinsicWidth(
-              child: ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
-                  physics: BouncingScrollPhysics(),
-                  itemCount: item_data.length,
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return GestureDetector(
-                      onTap: () {
-                        setState(
-                          () {
-                            _itemIndex = index;
-                          },
-                        );
-                      },
-                      child: AnimatedContainer(
-                        duration: Duration(milliseconds: 100),
-                        margin: const EdgeInsets.only(right: 16),
-                        padding: EdgeInsets.symmetric(horizontal: 16),
-                        decoration: BoxDecoration(
-                          color: _itemIndex == index ? primary : white,
-                          borderRadius: BorderRadius.circular(104),
-                        ),
-                        child: Center(
-                          child: Text(
-                            item_data[index].title,
-                            style: _itemIndex == index
-                                ? whiteText.copyWith(
-                                    fontSize: 12,
-                                    fontWeight: semibold,
-                                  )
-                                : blackText.copyWith(
-                                    fontSize: 12,
-                                    fontWeight: regular,
-                                  ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }),
-            ),
+          Tab(
+            child: TabItem(title: 'Restoran'),
           ),
-
-          //MAIN BODY
-          mainBody()
+          Tab(
+            child: TabItem(title: 'Cafe'),
+          ),
+          Tab(
+            child: TabItem(title: 'Warung Makan'),
+          ),
+          Tab(
+            child: TabItem(title: 'Kaki Lima'),
+          ),
         ],
       );
     }
@@ -202,12 +156,39 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: appBar(),
       backgroundColor: background,
-      body: ListView(
-        children: [
-          greeting(),
-          searchBar(),
-          tabBar(),
-        ],
+      body: DefaultTabController(
+        length: 5,
+        child: NestedScrollView(
+          headerSliverBuilder: (context, innerBoxisScrolled) => [
+            SliverToBoxAdapter(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  greeting(),
+                  searchBar(),
+                ],
+              ),
+            ),
+            SliverAppBar(
+              backgroundColor: Colors.transparent,
+              surfaceTintColor: Colors.transparent,
+              pinned: true,
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(0),
+                child: tabsItem(),
+              ),
+            ),
+          ],
+          body: TabBarView(
+            children: [
+              SemuaTab(),
+              RestoranTab(),
+              CafeTab(),
+              WarungMakanTab(),
+              KakiLimaTab(),
+            ],
+          ),
+        ),
       ),
     );
   }
