@@ -9,125 +9,149 @@ import 'package:dineinapp/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    appBar() {
-      return AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        backgroundColor: background,
-        surfaceTintColor: Colors.transparent,
-        title: Row(
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage(
-                    'assets/imgs/profile.png',
-                  ),
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  bool isSliverAppBarExpanded = false;
+  ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      setState(() {
+        isSliverAppBarExpanded =
+            _scrollController.hasClients && _scrollController.offset > 0;
+      });
+    });
+  }
+
+  appBar() {
+    return AppBar(
+      elevation: 0,
+      automaticallyImplyLeading: false,
+      backgroundColor: background,
+      surfaceTintColor: Colors.transparent,
+      title: Row(
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(
+                image: AssetImage(
+                  'assets/imgs/profile.png',
                 ),
               ),
             ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    'assets/svgs/ic_location.svg',
-                    width: 16,
-                    height: 16,
+          ),
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  'assets/svgs/ic_location.svg',
+                  width: 16,
+                  height: 16,
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                Text(
+                  'Malang,',
+                  style: blackText.copyWith(
+                    fontSize: 12,
+                    fontWeight: semibold,
                   ),
-                  SizedBox(
-                    width: 8,
+                ),
+                SizedBox(
+                  width: 4,
+                ),
+                Text(
+                  'Indonesia',
+                  style: blackText.copyWith(
+                    fontSize: 12,
+                    fontWeight: regular,
                   ),
-                  Text(
-                    'Malang,',
-                    style: blackText.copyWith(
-                      fontSize: 12,
-                      fontWeight: semibold,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 4,
-                  ),
-                  Text(
-                    'Indonesia',
-                    style: blackText.copyWith(
-                      fontSize: 12,
-                      fontWeight: regular,
-                    ),
-                  ),
-                  SizedBox(
-                    width: 8,
-                  ),
-                  SvgPicture.asset(
-                    'assets/svgs/ic_dropdown.svg',
-                    width: 16,
-                    height: 16,
-                  ),
-                ],
+                ),
+                SizedBox(
+                  width: 8,
+                ),
+                SvgPicture.asset(
+                  'assets/svgs/ic_dropdown.svg',
+                  width: 16,
+                  height: 16,
+                ),
+              ],
+            ),
+          ),
+          if (isSliverAppBarExpanded)
+            IconButton(
+              icon: SvgPicture.asset(
+                'assets/svgs/ic_search.svg',
+                color: black,
+                width: 28,
+                height: 28,
               ),
+              onPressed: () {},
             ),
-            SizedBox(
-              width: 24,
-            ),
-          ],
-        ),
-      );
-    }
+          if (!isSliverAppBarExpanded) SizedBox(width: 48),
+        ],
+      ),
+    );
+  }
 
-    Widget greeting() {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        margin: EdgeInsets.only(
-          top: 24,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Halo, Gilang',
-              style: blackText.copyWith(
-                fontSize: 14,
-                fontWeight: regular,
-              ),
+  Widget greeting() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 24),
+      margin: EdgeInsets.only(
+        top: 24,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Halo, Gilang',
+            style: blackText.copyWith(
+              fontSize: 14,
+              fontWeight: regular,
             ),
-            Text(
-              'Mau makan\ndimana hari ini?',
-              style: blackText.copyWith(
-                fontSize: 24,
-                fontWeight: semibold,
-              ),
+          ),
+          Text(
+            'Mau makan\ndimana hari ini?',
+            style: blackText.copyWith(
+              fontSize: 24,
+              fontWeight: semibold,
             ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
+  }
 
-    Widget searchBar() {
-      return Container(
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        margin: EdgeInsets.only(top: 24),
-        child: CustomTextField(
-          icon: 'assets/svgs/ic_search.svg',
-          hint: 'Cari restoran disini',
-        ),
-      );
-    }
+  Widget searchBar() {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 24),
+      margin: EdgeInsets.only(top: 24),
+      child: CustomTextField(
+        icon: 'assets/svgs/ic_search.svg',
+        hint: 'Cari restoran disini',
+      ),
+    );
+  }
 
-    TabBar tabsItem() {
-      return TabBar(
-        isScrollable: true,
-        physics: BouncingScrollPhysics(),
+  Widget tabsItem() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 24),
+      child: TabBar(
         labelColor: white,
         unselectedLabelColor: black,
-        indicatorWeight: 0,
         indicator: BoxDecoration(
           borderRadius: BorderRadius.circular(104),
           color: primary,
@@ -150,16 +174,20 @@ class HomePage extends StatelessWidget {
             child: TabItem(title: 'Kaki Lima'),
           ),
         ],
-      );
-    }
+      ),
+    );
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(),
-      backgroundColor: background,
+      backgroundColor: Colors.transparent,
       body: DefaultTabController(
         length: 5,
         child: NestedScrollView(
-          headerSliverBuilder: (context, innerBoxisScrolled) => [
+          controller: _scrollController,
+          headerSliverBuilder: (context, innerBoxIsScrolled) => [
             SliverToBoxAdapter(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -172,6 +200,7 @@ class HomePage extends StatelessWidget {
             SliverAppBar(
               backgroundColor: Colors.transparent,
               surfaceTintColor: Colors.transparent,
+              automaticallyImplyLeading: false,
               pinned: true,
               bottom: PreferredSize(
                 preferredSize: Size.fromHeight(0),
