@@ -20,6 +20,6 @@ final List<TabItemModel> item_data = [
     title: 'Kaki Lima',
   ),
   TabItemModel(
-    title: 'Rumah',
+    title: 'Rumah Makan',
   ),
 ];

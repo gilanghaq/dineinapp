@@ -1,5 +1,6 @@
 import 'package:dineinapp/screens/widgets/customtextfield_widget.dart';
 import 'package:dineinapp/screens/widgets/rowcard_item.dart';
+import 'package:dineinapp/screens/widgets/tilecard_item.dart';
 import 'package:dineinapp/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -125,23 +126,11 @@ class _HomePageState extends State<HomePage> {
     Widget tabBar() {
       Widget mainBody() {
         return Container(
-          margin: EdgeInsets.only(top: 24),
-          padding: EdgeInsets.symmetric(horizontal: 24),
+          margin: EdgeInsets.only(top: 16),
           width: double.infinity,
-          height: 500,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Tempat Populer',
-                style: blackText.copyWith(
-                  fontSize: 16,
-                  fontWeight: semibold,
-                ),
-              ),
-              SizedBox(
-                height: 16,
-              ),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
                 child: Row(
@@ -180,6 +169,7 @@ class _HomePageState extends State<HomePage> {
           StickyHeader(
             header: Container(
               height: 36,
+              color: background,
               width: double.infinity,
               child: IntrinsicWidth(
                 child: ListView.builder(
@@ -228,6 +218,56 @@ class _HomePageState extends State<HomePage> {
       );
     }
 
+    Widget restoTerdekat() {
+      int nearbyIndex = _itemIndex;
+
+      return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 24),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 24,
+            ),
+            Text(
+              '${item_data[nearbyIndex].title} Terdekat',
+              style: blackText.copyWith(
+                fontSize: 16,
+                fontWeight: semibold,
+              ),
+            ),
+            SizedBox(
+              height: 16,
+            ),
+            TileCard(
+              image: 'assets/imgs/img_4.png',
+              title: 'Sushi Station',
+              location: 'Kauman, Klojen',
+              rating: 4.7,
+              distance: 1.2,
+            ),
+            TileCard(
+              image: 'assets/imgs/img_5.png',
+              title: 'Barelo Swiss-Belinn',
+              location: 'Kauman, Klojen',
+              rating: 4.7,
+              distance: 1.2,
+            ),
+            TileCard(
+              image: 'assets/imgs/img_6.png',
+              title: 'Nakoa Cafe Panjaitan',
+              location: 'Penanggungan, Klojen',
+              rating: 4.7,
+              distance: 1.2,
+            ),
+            SizedBox(
+              height: 64,
+            ),
+          ],
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: appBar(),
       backgroundColor: background,
@@ -236,6 +276,7 @@ class _HomePageState extends State<HomePage> {
           greeting(),
           searchBar(),
           tabBar(),
+          restoTerdekat(),
         ],
       ),
     );
