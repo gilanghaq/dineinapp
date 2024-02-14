@@ -4,6 +4,7 @@ import 'package:dineinapp/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:dineinapp/models/tabitem_model.dart';
+import 'package:sticky_headers/sticky_headers/widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key});
@@ -145,7 +146,27 @@ class _HomePageState extends State<HomePage> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    RowCard(),
+                    RowCard(
+                      image: 'assets/imgs/img_1.png',
+                      title: 'SaigonSan Restaurant & Rooftop Terrace',
+                      location: 'Kauman, Klojen',
+                      rating: 4.9,
+                      distance: 4.1,
+                    ),
+                    RowCard(
+                      image: 'assets/imgs/img_2.png',
+                      title: 'LAB Coffee & Eatery',
+                      location: 'Landungsari, Dau',
+                      rating: 4.9,
+                      distance: 5.2,
+                    ),
+                    RowCard(
+                      image: 'assets/imgs/img_3.png',
+                      title: 'Gayageum Korean Barbeque',
+                      location: 'Karangwidoro, Dau',
+                      rating: 4.9,
+                      distance: 4.1,
+                    ),
                   ],
                 ),
               ),
@@ -156,12 +177,12 @@ class _HomePageState extends State<HomePage> {
 
       return Column(
         children: [
-          Container(
-            height: 36,
-            width: double.infinity,
-            color: Colors.transparent,
-            child: IntrinsicWidth(
-              child: ListView.builder(
+          StickyHeader(
+            header: Container(
+              height: 36,
+              width: double.infinity,
+              child: IntrinsicWidth(
+                child: ListView.builder(
                   padding: EdgeInsets.symmetric(horizontal: 24),
                   physics: BouncingScrollPhysics(),
                   itemCount: item_data.length,
@@ -169,11 +190,9 @@ class _HomePageState extends State<HomePage> {
                   itemBuilder: (context, index) {
                     return GestureDetector(
                       onTap: () {
-                        setState(
-                          () {
-                            _itemIndex = index;
-                          },
-                        );
+                        setState(() {
+                          _itemIndex = index;
+                        });
                       },
                       child: AnimatedContainer(
                         duration: Duration(milliseconds: 200),
@@ -199,12 +218,12 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     );
-                  }),
+                  },
+                ),
+              ),
             ),
+            content: mainBody(),
           ),
-
-          //MAIN BODY
-          mainBody()
         ],
       );
     }
