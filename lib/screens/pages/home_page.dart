@@ -1,4 +1,5 @@
 import 'package:dineinapp/screens/widgets/customtextfield_widget.dart';
+import 'package:dineinapp/screens/widgets/rowcard_item.dart';
 import 'package:dineinapp/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,19 +14,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _itemIndex = 0;
-  bool isSliverAppBarExpanded = false;
-  ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(() {
-      setState(() {
-        isSliverAppBarExpanded =
-            _scrollController.hasClients && _scrollController.offset > 0;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,17 +77,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             ),
-            if (isSliverAppBarExpanded)
-              IconButton(
-                icon: SvgPicture.asset(
-                  'assets/svgs/ic_search.svg',
-                  color: black,
-                  width: 28,
-                  height: 28,
-                ),
-                onPressed: () {},
-              ),
-            if (!isSliverAppBarExpanded) SizedBox(width: 48),
           ],
         ),
       );
@@ -161,6 +138,17 @@ class _HomePageState extends State<HomePage> {
                   fontWeight: semibold,
                 ),
               ),
+              SizedBox(
+                height: 16,
+              ),
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    RowCard(),
+                  ],
+                ),
+              ),
             ],
           ),
         );
@@ -188,7 +176,7 @@ class _HomePageState extends State<HomePage> {
                         );
                       },
                       child: AnimatedContainer(
-                        duration: Duration(milliseconds: 100),
+                        duration: Duration(milliseconds: 200),
                         margin: const EdgeInsets.only(right: 16),
                         padding: EdgeInsets.symmetric(horizontal: 16),
                         decoration: BoxDecoration(
