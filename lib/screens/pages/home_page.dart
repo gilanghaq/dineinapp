@@ -1,22 +1,18 @@
-import 'package:dineinapp/screens/pages/tabs/cafe_tab.dart';
-import 'package:dineinapp/screens/pages/tabs/kakilima_tab.dart';
-import 'package:dineinapp/screens/pages/tabs/restoran_tab.dart';
-import 'package:dineinapp/screens/pages/tabs/semua_tab.dart';
-import 'package:dineinapp/screens/pages/tabs/warungmakan_tab.dart';
 import 'package:dineinapp/screens/widgets/customtextfield_widget.dart';
-import 'package:dineinapp/screens/widgets/tabitem_widget.dart';
 import 'package:dineinapp/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:dineinapp/models/tabitem_model.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
+  int _itemIndex = 0;
   bool isSliverAppBarExpanded = false;
   ScrollController _scrollController = ScrollController();
 
@@ -31,193 +27,209 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  appBar() {
-    return AppBar(
-      elevation: 0,
-      automaticallyImplyLeading: false,
-      backgroundColor: background,
-      surfaceTintColor: Colors.transparent,
-      title: Row(
-        children: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              image: DecorationImage(
-                image: AssetImage(
-                  'assets/imgs/profile.png',
-                ),
-              ),
-            ),
-          ),
-          Expanded(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SvgPicture.asset(
-                  'assets/svgs/ic_location.svg',
-                  width: 16,
-                  height: 16,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  'Malang,',
-                  style: blackText.copyWith(
-                    fontSize: 12,
-                    fontWeight: semibold,
-                  ),
-                ),
-                SizedBox(
-                  width: 4,
-                ),
-                Text(
-                  'Indonesia',
-                  style: blackText.copyWith(
-                    fontSize: 12,
-                    fontWeight: regular,
-                  ),
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                SvgPicture.asset(
-                  'assets/svgs/ic_dropdown.svg',
-                  width: 16,
-                  height: 16,
-                ),
-              ],
-            ),
-          ),
-          if (isSliverAppBarExpanded)
-            IconButton(
-              icon: SvgPicture.asset(
-                'assets/svgs/ic_search.svg',
-                color: black,
-                width: 28,
-                height: 28,
-              ),
-              onPressed: () {},
-            ),
-          if (!isSliverAppBarExpanded) SizedBox(width: 48),
-        ],
-      ),
-    );
-  }
-
-  Widget greeting() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24),
-      margin: EdgeInsets.only(
-        top: 24,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Halo, Gilang',
-            style: blackText.copyWith(
-              fontSize: 14,
-              fontWeight: regular,
-            ),
-          ),
-          Text(
-            'Mau makan\ndimana hari ini?',
-            style: blackText.copyWith(
-              fontSize: 24,
-              fontWeight: semibold,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget searchBar() {
-    return Container(
-      padding: EdgeInsets.symmetric(horizontal: 24),
-      margin: EdgeInsets.only(top: 24),
-      child: CustomTextField(
-        icon: 'assets/svgs/ic_search.svg',
-        hint: 'Cari restoran disini',
-      ),
-    );
-  }
-
-  Widget tabsItem() {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 24),
-      child: TabBar(
-        labelColor: white,
-        unselectedLabelColor: black,
-        indicator: BoxDecoration(
-          borderRadius: BorderRadius.circular(104),
-          color: primary,
-        ),
-        indicatorSize: TabBarIndicatorSize.tab,
-        tabs: [
-          Tab(
-            child: TabItem(title: 'Semua'),
-          ),
-          Tab(
-            child: TabItem(title: 'Restoran'),
-          ),
-          Tab(
-            child: TabItem(title: 'Cafe'),
-          ),
-          Tab(
-            child: TabItem(title: 'Warung Makan'),
-          ),
-          Tab(
-            child: TabItem(title: 'Kaki Lima'),
-          ),
-        ],
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBar(),
-      backgroundColor: Colors.transparent,
-      body: DefaultTabController(
-        length: 5,
-        child: NestedScrollView(
-          controller: _scrollController,
-          headerSliverBuilder: (context, innerBoxIsScrolled) => [
-            SliverToBoxAdapter(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+    appBar() {
+      return AppBar(
+        elevation: 0,
+        automaticallyImplyLeading: false,
+        backgroundColor: background,
+        surfaceTintColor: Colors.transparent,
+        title: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: AssetImage(
+                    'assets/imgs/profile.png',
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  greeting(),
-                  searchBar(),
+                  SvgPicture.asset(
+                    'assets/svgs/ic_location.svg',
+                    width: 16,
+                    height: 16,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    'Malang,',
+                    style: blackText.copyWith(
+                      fontSize: 12,
+                      fontWeight: semibold,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 4,
+                  ),
+                  Text(
+                    'Indonesia',
+                    style: blackText.copyWith(
+                      fontSize: 12,
+                      fontWeight: regular,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  SvgPicture.asset(
+                    'assets/svgs/ic_dropdown.svg',
+                    width: 16,
+                    height: 16,
+                  ),
                 ],
               ),
             ),
-            SliverAppBar(
-              backgroundColor: Colors.transparent,
-              surfaceTintColor: Colors.transparent,
-              automaticallyImplyLeading: false,
-              pinned: true,
-              bottom: PreferredSize(
-                preferredSize: Size.fromHeight(0),
-                child: tabsItem(),
+            if (isSliverAppBarExpanded)
+              IconButton(
+                icon: SvgPicture.asset(
+                  'assets/svgs/ic_search.svg',
+                  color: black,
+                  width: 28,
+                  height: 28,
+                ),
+                onPressed: () {},
+              ),
+            if (!isSliverAppBarExpanded) SizedBox(width: 48),
+          ],
+        ),
+      );
+    }
+
+    Widget greeting() {
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 24),
+        margin: EdgeInsets.only(
+          top: 24,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Halo, Gilang',
+              style: blackText.copyWith(
+                fontSize: 14,
+                fontWeight: regular,
+              ),
+            ),
+            Text(
+              'Mau makan\ndimana hari ini?',
+              style: blackText.copyWith(
+                fontSize: 24,
+                fontWeight: semibold,
               ),
             ),
           ],
-          body: TabBarView(
+        ),
+      );
+    }
+
+    Widget searchBar() {
+      return Container(
+        padding: EdgeInsets.symmetric(horizontal: 24),
+        margin: EdgeInsets.only(top: 24),
+        child: CustomTextField(
+          icon: 'assets/svgs/ic_search.svg',
+          hint: 'Cari restoran disini',
+        ),
+      );
+    }
+
+    Widget tabBar() {
+      Widget mainBody() {
+        return Container(
+          margin: EdgeInsets.only(top: 24),
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          width: double.infinity,
+          height: 500,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SemuaTab(),
-              RestoranTab(),
-              CafeTab(),
-              WarungMakanTab(),
-              KakiLimaTab(),
+              Text(
+                'Tempat Populer',
+                style: blackText.copyWith(
+                  fontSize: 16,
+                  fontWeight: semibold,
+                ),
+              ),
             ],
           ),
-        ),
+        );
+      }
+
+      return Column(
+        children: [
+          Container(
+            height: 36,
+            width: double.infinity,
+            color: Colors.transparent,
+            child: IntrinsicWidth(
+              child: ListView.builder(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  physics: BouncingScrollPhysics(),
+                  itemCount: item_data.length,
+                  scrollDirection: Axis.horizontal,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () {
+                        setState(
+                          () {
+                            _itemIndex = index;
+                          },
+                        );
+                      },
+                      child: AnimatedContainer(
+                        duration: Duration(milliseconds: 100),
+                        margin: const EdgeInsets.only(right: 16),
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        decoration: BoxDecoration(
+                          color: _itemIndex == index ? primary : white,
+                          borderRadius: BorderRadius.circular(104),
+                        ),
+                        child: Center(
+                          child: Text(
+                            item_data[index].title,
+                            style: _itemIndex == index
+                                ? whiteText.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: semibold,
+                                  )
+                                : blackText.copyWith(
+                                    fontSize: 12,
+                                    fontWeight: regular,
+                                  ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }),
+            ),
+          ),
+
+          //MAIN BODY
+          mainBody()
+        ],
+      );
+    }
+
+    return Scaffold(
+      appBar: appBar(),
+      backgroundColor: background,
+      body: ListView(
+        children: [
+          greeting(),
+          searchBar(),
+          tabBar(),
+        ],
       ),
     );
   }
